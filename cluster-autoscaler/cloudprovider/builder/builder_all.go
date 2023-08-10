@@ -1,5 +1,5 @@
-//go:build !gce && !aws && !azure && !kubemark && !alicloud && !magnum && !digitalocean && !clusterapi && !huaweicloud && !ionoscloud && !linode && !hetzner && !bizflycloud && !brightbox && !packet && !oci && !vultr && !tencentcloud && !scaleway && !externalgrpc && !civo && !rancher && !volcengine && !baiducloud && !cherry && !cloudstack && !exoscale && !kamatera && !ovhcloud
-// +build !gce,!aws,!azure,!kubemark,!alicloud,!magnum,!digitalocean,!clusterapi,!huaweicloud,!ionoscloud,!linode,!hetzner,!bizflycloud,!brightbox,!packet,!oci,!vultr,!tencentcloud,!scaleway,!externalgrpc,!civo,!rancher,!volcengine,!baiducloud,!cherry,!cloudstack,!exoscale,!kamatera,!ovhcloud
+//go:build !gce && !aws && !azure && !kubemark && !alicloud && !magnum && !digitalocean && !clusterapi && !huaweicloud && !ionoscloud && !linode && !hetzner && !bizflycloud && !brightbox && !packet && !oci && !vultr && !tencentcloud && !scaleway && !externalgrpc && !civo && !rancher && !volcengine && !baiducloud && !cherry && !cloudstack && !exoscale && !kamatera && !ovhcloud && !flow
+// +build !gce,!aws,!azure,!kubemark,!alicloud,!magnum,!digitalocean,!clusterapi,!huaweicloud,!ionoscloud,!linode,!hetzner,!bizflycloud,!brightbox,!packet,!oci,!vultr,!tencentcloud,!scaleway,!externalgrpc,!civo,!rancher,!volcengine,!baiducloud,!cherry,!cloudstack,!exoscale,!kamatera,!ovhcloud,!flow
 
 /*
 Copyright 2018 The Kubernetes Authors.
@@ -34,6 +34,7 @@ import (
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/digitalocean"
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/exoscale"
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/externalgrpc"
+	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/flow"
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/gce"
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/hetzner"
 	"k8s.io/autoscaler/cluster-autoscaler/cloudprovider/huaweicloud"
@@ -82,6 +83,7 @@ var AvailableCloudProviders = []string{
 	cloudprovider.ScalewayProviderName,
 	cloudprovider.RancherProviderName,
 	cloudprovider.VolcengineProviderName,
+	cloudprovider.FlowProviderName,
 }
 
 // DefaultCloudProvider is GCE.
@@ -145,6 +147,8 @@ func buildCloudProvider(opts config.AutoscalingOptions, do cloudprovider.NodeGro
 		return rancher.BuildRancher(opts, do, rl)
 	case cloudprovider.VolcengineProviderName:
 		return volcengine.BuildVolcengine(opts, do, rl)
+	case cloudprovider.FlowProviderName:
+		return flow.BuildFlow(opts, do, rl)
 	}
 	return nil
 }
